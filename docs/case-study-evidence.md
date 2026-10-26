@@ -13,16 +13,16 @@ Updated 26 October 2026. Private editorial notes; this file is not copied into t
 - No regulatory, licensing or KYC claims from the older PRD are republished.
 - No invented rejected variants, chronology, user quotes, participant counts, measured impact, cofounder feedback or research results.
 - Discussion of a trade-off is analysis of the current design, not a claim that alternatives were tested.
-- Proposed evaluation tables are explicitly future work.
+- Proposed evaluation tables and draft evidence-gathering notes are excluded from the published case studies.
 - Internal Intercity materials remain excluded.
 
 ## Evidence still needed from Eddy
-1. KoboSpend: one actual before/after decision, what triggered it, dated screens if available.
+1. KoboSpend is a newly designed product, as confirmed by Eddy on 26 October 2026. No earlier version or redesign exists; do not request or imply a before/after story. Document original decisions and scope.
 2. KoboSpend: one backend-cofounder conversation that changed transaction behaviour, scope or design; agreed vs unresolved status.
 3. Consto: one change made while building or after someone tried it; original issue, revision, observed result.
 4. Any completed testing: who, what tasks, what was observed, changes made; counts only when known.
 
 ## Public presentation
-KoboSpend: money pacing → two distinct money actions → commitment journey → operational questions → evaluation.
-Consto: personal origin → optional planning → shipped behaviour → documented MVP boundary → evaluation.
+KoboSpend: money pacing → two distinct money actions → commitment journey → cross-surface scope → delivery and learning.
+Consto: personal origin → optional planning → shipped behaviour → documented MVP boundary → delivery and learning.
 No before/after comparison is published without original variants and a factual account.

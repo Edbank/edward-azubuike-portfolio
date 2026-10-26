@@ -1,7 +1,7 @@
 // Project-specific narratives. Sources and limits are recorded in docs/case-study-evidence.md.
 export const storyOutlines={
- kobospend:[['context','01 Money with a schedule'],['decisions','02 Two actions, two balances'],['experience-design','03 From intent to a funded plan'],['operations','04 Beyond the ideal path'],['outcome','05 What to validate next']],
- consto:[['context','01 The reason I built it'],['decisions','02 Less planning before doing'],['experience-design','03 Starting, focusing, returning'],['scope','04 Keeping the MVP focused'],['outcome','05 Shipped, then what?']]
+ kobospend:[['context','01 Money with a schedule'],['decisions','02 Two actions, two balances'],['experience-design','03 From intent to a funded plan'],['operations','04 Beyond the ideal path'],['outcome','05 Delivery and learning']],
+ consto:[['context','01 The reason I built it'],['decisions','02 Less planning before doing'],['experience-design','03 Starting, focusing, returning'],['scope','04 Keeping the MVP focused'],['outcome','05 Delivery and learning']]
 };
 export function renderStory(p,{esc,figure}){
  const section=(id,kicker,title,content)=>`<section id="${id}" class="case-section"><p class="eyebrow">${kicker}</p><h2>${title}</h2>${content}</section>`;
@@ -10,10 +10,10 @@ export function renderStory(p,{esc,figure}){
  const table=(headers,rows)=>`<div class="story-table-wrap"><table class="story-table"><thead><tr>${headers.map(x=>`<th scope="col">${x}</th>`).join('')}</tr></thead><tbody>${rows.map(row=>`<tr>${row.map((x,i)=>i?`<td>${x}</td>`:`<th scope="row">${x}</th>`).join('')}</tr>`).join('')}</tbody></table></div>`;
  const steps=(copy)=>`<div class="story-steps">${p.flow.map(([title,src],i)=>`<article class="story-step"><div><p class="eyebrow">${String(i+1).padStart(2,'0')} / ${esc(title)}</p><h3>${copy[i][0]}</h3><p>${copy[i][1]}</p>${note('Design trade-off',copy[i][2])}</div>${figure(src,title,true)}</article>`).join('')}</div>`;
  if(p.slug==='kobospend')return section('context','01 / The product question','A budget tells you the limit.<br><em>When can you use it?</em>',`
- <p class="large-copy">KoboSpend is built around money someone has already decided to spend. The product hypothesis is that scheduled access can help that amount last through a chosen period.</p>
+ <p class="large-copy">KoboSpend is built around money someone has already decided to spend. The product lets someone set a spending amount and choose how it becomes available over a chosen period.</p>
  <p>That creates a different design problem from displaying a monthly budget: the interface has to explain what is accessible now, what remains reserved, and when that changes.</p>
- <div class="story-panels">${panel('My responsibility','The experience across surfaces','Sole product designer for the mobile and desktop experience, working with a backend cofounder. My scope includes plan creation, balances, funding, withdrawals, account management and back-office workflows.')}${panel('Product hypothesis','Pace access to planned spending','The design assumes that making only the scheduled amount available will support spending discipline. That behavioural benefit still needs validation with people using the product.')}</div>
- ${note('Current stage','Pre-launch product design. The walkthrough shows original screens with illustrative amounts and dates; the captures are not a single transaction record.')}`)
+ <div class="story-panels">${panel('My responsibility','The experience across surfaces','Sole product designer for the mobile and desktop experience, working with a backend cofounder. My scope includes plan creation, balances, funding, withdrawals, account management and back-office workflows.')}${panel('Product direction','Pace access to planned spending','The experience separates money available today from money reserved for later releases. Amount, timing and access form the core of the product.')}</div>
+ ${note('Current stage','New product design across mobile and desktop, preparing to ship.')}`)
  +section('decisions','02 / The central design decision','A release is not<br><em>a withdrawal.</em>',`
  <p class="large-copy">The product brief separates two events: a scheduled release moves money into an available balance; a withdrawal moves available money to a bank account.</p>
  <p>The dashboard therefore gives money available today the strongest hierarchy, while keeping the locked balance and next release visible. A total balance alone would leave the immediate spending boundary unexplained.</p>
@@ -30,31 +30,23 @@ export function renderStory(p,{esc,figure}){
  ['When does the commitment become active?','Funding follows the definition and review of the plan. The experience needs a clear distinction between a drafted plan and a funded commitment.','Payment introduces pending and failed states; designing the successful funding screen alone does not resolve them.']
  ])}
  <div class="detail-feature"><div><p class="eyebrow">A rule at the point of correction</p><h3>What if the schedule does not add up?</h3><p>The brief requires scheduled releases to equal the plan amount. This screen explains the unallocated remainder beside Continue, giving a reason and a correction path.</p><p>The usability question is whether someone can fix it without guessing which entry is wrong.</p></div>${figure('kobospend/under.webp','Unallocated amount validation in release scheduling',true)}</div>`)
- +section('operations','04 / Systems thinking','The promise has to survive<br><em>a failed transaction.</em>',`
- <p class="large-copy">A clear plan is only the beginning. Releases, withdrawals and support need to describe the same money state.</p>
- <p>My scope includes back-office workflows. The following are evaluation and implementation questions for that wider system, rather than claims that the failure paths have already been proven.</p>
- ${table(['Moment','Question the experience must answer'],[
- ['A release does not complete','What remains locked, what status is visible, and how can support identify the affected release?'],
- ['A bank withdrawal is pending or fails','Where is the money now, and when is retrying safe without creating a duplicate transfer?'],
- ['Someone needs money early','What changes in the plan, what does access cost, and what will the person receive before confirming?']
- ])}
- ${note('Working boundary','I own the experience design; backend implementation is a shared dependency with my cofounder. Final transaction behaviour needs agreement across the user interface, service logic and support workflow.')}`)
- +section('outcome','05 / Delivery and evaluation','A defined experience.<br><em>A hypothesis still to test.</em>',`
- <p>The current design covers the core plan journey across mobile and desktop. The next milestone is to validate comprehension and recovery before treating the interface as evidence of changed financial behaviour.</p>
- <h3>Proposed evaluation</h3>
- ${table(['Task','What I would observe'],[
- ['Explain the dashboard without guidance','Can the participant distinguish accessible money, locked funds and the next release?'],
- ['Create and correct a release schedule','Can they notice the unallocated amount and resolve it without assistance?'],
- ['Review a plan before funding','Can they explain when money becomes available and what happens after funding?'],
- ['Interpret a pending withdrawal','Can they describe where the money is and identify a safe next action?']
- ])}
- <p class="story-caption">Planned tasks and observation criteria—not completed research or measured results.</p>
- <blockquote>The central design challenge is making a restriction feel understandable before someone commits money to it.</blockquote>`);
+ +section('operations','04 / Design scope','One money model.<br><em>Two sides of the product.</em>',`
+ <p class="large-copy">The user experience and back-office workflows share the same core distinction: money reserved for later, money available now, and money being withdrawn.</p>
+ <p>My role spans the mobile and desktop user experience, account management and back-office workflows. I work with a backend cofounder on the product.</p>
+ ${table(['Surface','Design focus'],[
+ ['User experience','Plan creation, release schedules, funding, balance visibility and withdrawal states.'],
+ ['Account management','Bank details, security, notifications and access to help.'],
+ ['Back office','Operational workflows supporting the spending-plan product.']
+ ])}`)
+ +section('outcome','05 / Delivery and learning','A new product.<br><em>A coherent spending journey.</em>',`
+ <p class="large-copy">I designed KoboSpend’s core spending-plan experience across mobile and desktop, from setting an amount to reviewing and funding the plan.</p>
+ <p>The work connects the balance model to scheduling, validation and account management. The product is preparing to ship.</p>
+ <blockquote>The central design challenge is making a restriction understandable before someone commits money to it.</blockquote>`);
  if(p.slug==='consto')return section('context','01 / The starting point','Starting was easier<br><em>than finishing.</em>',`
  <p class="large-copy">I built Consto because I struggled to follow through on my own goals and tasks. I wanted accountability that reached beyond writing another to-do list.</p>
- <p>That personal experience gave me a reason to build. It did not establish that everyone has the same problem. The original brief narrowed the MVP to active job seekers: an audience with concrete, repeated work such as applications, preparation and follow-ups.</p>
+ <p>I focused the MVP on active job seekers: an audience with concrete, repeated work such as applications, preparation and follow-ups.</p>
  <div class="story-panels">${panel('Ownership','Designer, builder and product owner','I shaped the experience and built the working web application using AI-assisted development. The screens below come from the shipped product.')}${panel('Product question','What happens after making a plan?','The design connects a commitment to a start action, an active work session and a way to adjust the plan when the day changes.')}</div>
- ${note('Evidence available','Consto is live. The walkthrough demonstrates implemented behaviour; sustained use and improved follow-through are still open evaluation questions.')}`)
+ `)
  +section('decisions','02 / A deliberate scope choice','A task should not require<br><em>a planning system.</em>',`
  <p class="large-copy">The original brief explicitly keeps goals optional and excludes a monthly → weekly → daily hierarchy. The task is the unit of action.</p>
  <p>That choice makes it possible to schedule a specific piece of work without first building a larger plan. A goal can provide context when useful, rather than becoming a prerequisite.</p>
@@ -64,7 +56,7 @@ export function renderStory(p,{esc,figure}){
  ['A task with a measure and time','Make the commitment specific enough to act on.','More input than a quick text-only to-do item.'],
  ['An explicit start action','Separate planning work from beginning work.','Another interaction that must justify its place in the flow.']
  ])}
- <p class="story-caption">These are rationale and trade-offs in the documented design, not findings from a comparison test.</p>`)
+ `)
  +section('experience-design','03 / The working experience','A plan needs a start.<br><em>A changed day needs a return.</em>',`
  <p class="section-lead">The shipped flow lets me inspect how the decisions behave together, from defining a task to adjusting its time.</p>
  ${steps([
@@ -81,18 +73,11 @@ export function renderStory(p,{esc,figure}){
  ['Accountability through rules and event history','The original MVP specification describes rules and parameterized messaging. AI-assisted development does not mean the product itself uses reasoning AI.']
  ])}
  <h3>What shipping lets me examine</h3><p>The implementation makes task creation, session controls and rescheduling available as one experience. That provides a basis for observing hesitation and recovery in use, rather than judging disconnected static screens.</p>
- ${note('Brief versus delivery','The scope choices above come from the original Buddy brief, before the product was named Consto. The walkthrough shows the selected shipped flow; it does not claim every requirement in that brief has been verified in production.')}`)
- +section('outcome','05 / What comes after shipping','The product is live.<br><em>The behaviour is the next question.</em>',`
- <p>Designing and building Consto established a working product I can put in front of people. The next useful evidence is whether the journey helps them begin work and return after a changed plan.</p>
- <h3>Proposed evaluation</h3>
- ${table(['Question','Evidence to collect'],[
- ['Can someone get to a useful first task?','Observe creation without a goal; record hesitations and requests for help.'],
- ['Where does a planned task lose momentum?','Observe the transition from task creation to starting a session.'],
- ['Does rescheduling help someone return?','Follow what happens after the new time, alongside the person’s explanation.'],
- ['Does the product remain useful beyond the first visit?','Look at return use and repeated task follow-through, with user consent and a defined observation period.']
- ])}
- <p class="story-caption">An evaluation plan. No retention or productivity improvement is claimed.</p>
- <blockquote>My own difficulty supplied the starting point. Other people’s behaviour has to supply the evidence.</blockquote>
+ `)
+ +section('outcome','05 / Delivery and learning','Designed, built<br><em>and shipped.</em>',`
+ <p class="large-copy">Consto is a live web product I designed and built, connecting task planning, focus sessions and rescheduling.</p>
+ <p>Taking the design into implementation brought the whole journey together: defining a commitment, starting the work, controlling a session and adjusting its time.</p>
+ <blockquote>Building the product made interface behaviour and implementation part of the same design problem.</blockquote>
  <a class="button primary" href="${esc(p.link)}" target="_blank" rel="noopener noreferrer">Try Consto <span aria-hidden="true">↗</span></a>`);
  return '';
 }
