@@ -1,0 +1,8 @@
+import {readFile,readdir,stat} from 'node:fs/promises';import{resolve,dirname}from'node:path';
+const root=resolve('dist');let count=0;const failures=[];
+async function walk(dir){let out=[];for(const e of await readdir(dir,{withFileTypes:true})){const p=resolve(dir,e.name);if(e.isDirectory())out.push(...await walk(p));else out.push(p);}return out;}
+for(const file of (await walk(root)).filter(p=>p.endsWith('.html'))){const html=await readFile(file,'utf8');const h1=html.match(/<h1[ >]/g)||[];if(h1.length!==1)failures.push(`${file}: expected one h1`);for(const m of html.matchAll(/<(?:a|link|img|script)\b[^>]*\b(?:href|src)="([^"]+)"[^>]*>/g)){const ref=m[1];if(/^(https?:|mailto:|data:)/.test(ref))continue;const [pathname,hash]=ref.split('#');let target=pathname?resolve(pathname.startsWith('/')?root:dirname(file),'.'+(pathname.startsWith('/')?pathname:'/'+pathname)):file;
+try{let s=await stat(target);if(s.isDirectory())target=resolve(target,'index.html');await stat(target);count++;if(hash&&target.endsWith('.html')){let text=await readFile(target,'utf8');if(!text.includes(`id="${hash}"`))failures.push(`Missing anchor ${ref} in ${file}`);}}catch{failures.push(`Missing target ${ref} in ${file}`);}}
+for(const m of html.matchAll(/<img\b[^>]*>/g))if(!/\balt="[^"]*"/.test(m[0]))failures.push(`Missing image alt in ${file}`);
+if(html.includes('chatgpt.site'))failures.push(`Old hosting dependency in ${file}`);}
+if(failures.length){console.error(failures.join('\n'));process.exit(1);}console.log(`Passed: ${count} local links/assets and fragment targets; all pages have one h1, image alternatives and no dependency on the former host.`);
