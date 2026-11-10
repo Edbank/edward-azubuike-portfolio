@@ -1,7 +1,23 @@
-const menu=document.querySelector('.menu-toggle');const mobileNav=document.querySelector('#mobile-nav');
-menu?.addEventListener('click',()=>{const open=menu.getAttribute('aria-expanded')!=='true';menu.setAttribute('aria-expanded',String(open));mobileNav.hidden=!open;});
-mobileNav?.addEventListener('click',e=>{if(e.target.closest('a')){menu.setAttribute('aria-expanded','false');mobileNav.hidden=true;}});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!mobileNav.hidden){mobileNav.hidden=true;menu.setAttribute('aria-expanded','false');menu.focus();}});
+const menu=document.querySelector('.menu-toggle');
+const mobileNav=document.querySelector('#mobile-nav');
+function setMobileMenu(open){
+ if(!menu||!mobileNav)return;
+ menu.setAttribute('aria-expanded',String(open));
+ menu.setAttribute('aria-label',open?'Close navigation menu':'Open navigation menu');
+ const label=menu.querySelector('[data-menu-label]');
+ if(label)label.textContent=open?'Close':'Menu';
+ const icon=menu.querySelector('[data-menu-icon]');
+ if(icon)icon.textContent=open?'×':'+';
+ mobileNav.hidden=!open;
+}
+menu?.addEventListener('click',()=>setMobileMenu(menu.getAttribute('aria-expanded')!=='true'));
+mobileNav?.addEventListener('click',event=>{if(event.target.closest('a'))setMobileMenu(false);});
+document.addEventListener('keydown',event=>{
+ if(event.key==='Escape'&&menu?.getAttribute('aria-expanded')==='true'){setMobileMenu(false);menu.focus();}
+});
+document.addEventListener('click',event=>{
+ if(menu?.getAttribute('aria-expanded')==='true'&&!event.target.closest('#mobile-nav,.menu-toggle'))setMobileMenu(false);
+});
 const dialog=document.querySelector('#image-dialog'),image=document.querySelector('#dialog-image'),title=document.querySelector('#image-title');let lastTrigger;
 document.querySelectorAll('[data-zoom]').forEach(link=>link.addEventListener('click',e=>{if(!dialog?.showModal)return;e.preventDefault();lastTrigger=link;image.src=link.href;image.alt=link.dataset.title;title.textContent=link.dataset.title;dialog.showModal();document.body.classList.add('dialog-open');}));
 document.querySelector('.close-dialog')?.addEventListener('click',()=>dialog.close());dialog?.addEventListener('click',e=>{if(e.target===dialog)dialog.close();});dialog?.addEventListener('close',()=>{document.body.classList.remove('dialog-open');lastTrigger?.focus();});
