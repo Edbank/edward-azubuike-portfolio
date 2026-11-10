@@ -1,6 +1,7 @@
 import { mkdir,rm,cp,writeFile,readFile } from 'node:fs/promises';
 import {projects} from './projects.mjs';
 import {renderStory,storyOutlines} from './case-stories.mjs';
+import {renderPlaygroundHome} from './playground.mjs';
 const root=new URL('./',import.meta.url),dist=new URL('./dist/',root);
 await rm(dist,{recursive:true,force:true});await mkdir(dist,{recursive:true});await cp(new URL('./public/',root),dist,{recursive:true});
 const site=(process.env.SITE_URL||'').replace(/\/$/,'');
