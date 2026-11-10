@@ -298,3 +298,12 @@ body:has(.playground) .site-footer{padding:45px 20px 0}body:has(.playground) .fo
  .device-mockup,.device-mockup__screen img{transition:none!important}
  .device-mockup--back,.device-mockup--front{transform:none}
 }
+
+.hero-orb{display:grid;place-items:center;text-align:center}
+.hero-orb span{font:900 10px/1 var(--pg-body);letter-spacing:.13em;color:#171719;text-shadow:0 1px 0 #ffffff66;transform:rotate(-12deg)}
+.hero-orb--violet span{color:#fff;font-size:8px;letter-spacing:.08em}
+:root[data-theme="dark"] .hero-orb--violet span{color:#fff}
+@media(max-width:700px){
+ body:has(.playground) .menu-toggle{display:inline-flex!important;align-items:center;justify-content:center}
+ body:has(.playground) .header-controls{display:flex!important}
+}
