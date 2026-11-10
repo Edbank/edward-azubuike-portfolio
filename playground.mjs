@@ -1,20 +1,31 @@
 const escapeHtml = (value = '') => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
 export function renderPlaygroundHome({ header, footer, projects, esc = escapeHtml, arrow = '<span aria-hidden="true">↗</span>' }) {
+  const projectScreens = (project) => {
+    const screens = project.flow || [];
+    const first = screens[0] || [project.name, project.image, project.alt];
+    const second = screens[1] || [project.name + " — close-up", project.image, project.alt];
+    return [first, second].map(([label, src, description], i) => `
+      <div class="device-mockup device-mockup--${i ? 'back' : 'front'}">
+        <div class="device-mockup__hardware"><span></span><i></i></div>
+        <div class="device-mockup__screen"><img src="/assets/${esc(src || project.image)}" alt="${esc(project.name + ' — ' + label)}" loading="lazy" decoding="async"></div>
+        <span class="device-mockup__caption">${esc(label)}</span>
+      </div>`).join('');
+  };
   const projectCard = (project, index) => {
     const featured = index === 0;
     const tone = ['lime','violet','orange','blue','paper','ink'][index % 6];
-    const image = project.image || '';
+    const screens = projectScreens(project);
     return `
       <article class="play-project play-project--${featured ? 'feature' : 'standard'} tone-${tone}" data-reveal>
         <a class="play-project__link" href="/work/${esc(project.slug)}/" aria-label="Explore ${esc(project.name)} project">
           <div class="play-project__visual">
-            <div class="play-project__meta"><span>${esc(project.number)} / ${esc(project.type)}</span><span>CASE STUDY ↗</span></div>
-            <div class="play-project__image"><img src="/assets/${esc(image)}" alt="${esc(project.alt || project.name + ' project preview')}" loading="${featured ? 'eager' : 'lazy'}" decoding="async"></div>
-            <span class="play-project__sticker" aria-hidden="true">${featured ? 'IN MOTION' : 'EXPLORE'} <span>↗</span></span>
+            <div class="play-project__meta"><span>${esc(project.number)} / ${esc(project.type)}</span><span>OPEN CASE STUDY ↗</span></div>
+            <div class="device-stage" aria-label="Two framed interface previews for ${esc(project.name)}">${screens}</div>
+            <span class="play-project__sticker" aria-hidden="true">MADE<br>TO WORK <span>↗</span></span>
           </div>
           <div class="play-project__info">
-            <div><p class="eyebrow">${esc(project.focus || project.type)}</p><h3>${esc(project.name)} <span aria-hidden="true">↗</span></h3><p>${esc(project.summary)}</p></div>
+            <div><p class="eyebrow">${esc(project.focus || project.type)}</p><h3>${esc(project.name)} <span aria-hidden="true">↗</span></h3><p>${esc(project.summary)}</p><span class="play-project__descriptor">${esc(project.platform)} · ${esc(project.status)}</span></div>
             <span class="play-project__index">0${index + 1}</span>
           </div>
         </a>
@@ -36,7 +47,7 @@ export function renderPlaygroundHome({ header, footer, projects, esc = escapeHtm
         </div>
         <div class="play-hero__art" aria-label="Portrait of Edward Azubuike integrated into an abstract graphic composition">
           <div class="orbit orbit--one" aria-hidden="true"></div><div class="orbit orbit--two" aria-hidden="true"></div>
-          <div class="hero-orb hero-orb--lime" aria-hidden="true"></div><div class="hero-orb hero-orb--violet" aria-hidden="true"></div>
+          <div class="hero-orb hero-orb--lime" aria-hidden="true"><span>MAKE</span></div><div class="hero-orb hero-orb--violet" aria-hidden="true"><span>IDEAS</span></div>
           <div class="hero-portrait"><img src="/assets/profile/edward.webp" alt="Edward Azubuike" width="640" height="800" fetchpriority="high"></div>
           <div class="hero-portrait__frame" aria-hidden="true"></div>
           <div class="hero-sticker hero-sticker--top" aria-hidden="true"><span>EA®</span><small>MADE OF<br>IDEAS</small></div>
@@ -81,7 +92,7 @@ export function renderPlaygroundHome({ header, footer, projects, esc = escapeHtm
         </div>
         <div class="lab-playground__bottom"><span>ONE LITTLE INTERACTION. ENDLESS DIRECTIONS.</span><button class="lab-remix" id="lab-remix" type="button">REMIX THE COMPOSITION <span aria-hidden="true">↻</span></button></div>
       </div>
-      <div class="lab-coming"><span>THE LAB IS ALWAYS OPEN.</span><p>More experiments will find their way here as I make them.</p></div>
+      <div class="lab-coming"><span>EXPERIMENTATION IS PART OF THE PROCESS.</span><p>Interaction studies, motion tests and visual systems — built to explore an idea, not fill a gallery.</p></div>
     </section>
 
     <section class="play-about" id="about" aria-labelledby="about-title">
