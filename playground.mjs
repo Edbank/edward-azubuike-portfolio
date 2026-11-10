@@ -1,27 +1,16 @@
 const escapeHtml = (value = '') => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
 export function renderPlaygroundHome({ header, footer, projects, esc = escapeHtml, arrow = '<span aria-hidden="true">↗</span>' }) {
-  const projectScreens = (project) => {
-    const screens = project.flow || [];
-    const first = screens[0] || [project.name, project.image, project.alt];
-    const second = screens[1] || [project.name + " — close-up", project.image, project.alt];
-    return [first, second].map(([label, src, description], i) => `
-      <div class="device-mockup device-mockup--${i ? 'back' : 'front'}">
-        <div class="device-mockup__hardware"><span></span><i></i></div>
-        <div class="device-mockup__screen"><img src="/assets/${esc(src || project.image)}" alt="${esc(project.name + ' — ' + label)}" loading="lazy" decoding="async"></div>
-        <span class="device-mockup__caption">${esc(label)}</span>
-      </div>`).join('');
-  };
   const projectCard = (project, index) => {
     const featured = index === 0;
     const tone = ['lime','violet','orange','blue','paper','ink'][index % 6];
-    const screens = projectScreens(project);
+    const imageAlt = project.alt || project.name + ' project interface preview';
     return `
       <article class="play-project play-project--${featured ? 'feature' : 'standard'} tone-${tone}" data-reveal>
-        <a class="play-project__link" href="/work/${esc(project.slug)}/" aria-label="Explore ${esc(project.name)} project">
+        <a class="play-project__link" href="/work/${esc(project.slug)}/" aria-label="Explore the ${esc(project.name)} case study">
           <div class="play-project__visual">
             <div class="play-project__meta"><span>${esc(project.number)} / ${esc(project.type)}</span><span>OPEN CASE STUDY ↗</span></div>
-            <div class="device-stage" aria-label="Two framed interface previews for ${esc(project.name)}">${screens}</div>
+            <div class="play-project__image"><img src="/assets/${esc(project.image)}" alt="${esc(imageAlt)}" loading="lazy" decoding="async"></div>
             <span class="play-project__sticker" aria-hidden="true">MADE<br>TO WORK <span>↗</span></span>
           </div>
           <div class="play-project__info">
