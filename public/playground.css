@@ -307,3 +307,111 @@ body:has(.playground) .site-footer{padding:45px 20px 0}body:has(.playground) .fo
  body:has(.playground) .menu-toggle{display:inline-flex!important;align-items:center;justify-content:center}
  body:has(.playground) .header-controls{display:flex!important}
 }
+
+
+/* Focused refinement: restore editorial previews, strengthen contrast and preserve hierarchy. */
+.play-project__visual{min-height:360px}
+.play-project--feature .play-project__visual{min-height:510px}
+.play-project__image{position:absolute;inset:65px 8% -4% 8%;overflow:hidden;display:flex;justify-content:center;align-items:flex-start}
+.play-project__image img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+.play-project__info{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:start;padding-top:20px}
+.play-project__info>div{max-width:720px}
+.play-project__info .eyebrow{font-size:10px;line-height:1.5;color:#403d37;letter-spacing:.1em}
+.play-project__info h3{margin:8px 0 10px}
+.play-project__info p:not(.eyebrow){font-size:14px;line-height:1.7;color:#37352f}
+.play-project__descriptor{color:#49463f;font-size:10px;line-height:1.6}
+.play-project__index{font-size:12px;color:#49463f}
+.play-section-label{color:#514e47}
+.play-work__heading>p,.manifesto-foot p,.play-toolkit__heading>p{color:#45423c}
+.manifesto-aside__index,.toolkit-tools span{color:#514e47}
+.toolkit-item small{color:#49463f}
+.hero-coordinate,.hero-art-caption{color:#e0dce5}
+.play-hero__topline{color:#ded9e4}
+.play-kicker{color:#e0dce5}
+.play-hero__intro{color:#e0dce5}
+.play-hero__bottom{color:#d8d3de}
+.play-text-link{color:#f0edf5}
+.play-section-label--light{color:#e0dce5}
+.play-lab__intro>p:last-child{color:#e0dce5}
+.lab-playground__top,.lab-playground__bottom{color:#e0dce5}
+.lab-canvas__coordinate{color:#e0dce5}
+.lab-canvas__scribble{color:#ff9a7a}
+.lab-coming{color:#c6ff55}
+.lab-coming p{color:#e0dce5}
+.play-about__copy>p:not(.play-kicker){color:#45423c}
+.play-about__copy .play-about__lead{color:#171719}
+.play-about__copy .play-kicker{color:#493bd6}
+.play-toolkit__heading>p{color:#45423c}
+.toolkit-item>span{color:#493bd6}
+.toolkit-tools span{color:#514e47}
+.play-cta{background:#5144e8}
+.play-cta__bottom p{color:#fff}
+.play-cta__bottom a{color:#171719}
+.play-cursor{display:none}
+
+/* Explicit high-contrast dark theme for every text-bearing surface. */
+:root[data-theme="dark"] body:has(.playground){background:#17161d;color:#f4f1f8}
+:root[data-theme="dark"] .play-manifesto,
+:root[data-theme="dark"] .play-work,
+:root[data-theme="dark"] .play-about,
+:root[data-theme="dark"] .play-toolkit{background:#17161d;color:#f4f1f8}
+:root[data-theme="dark"] .play-section-label,
+:root[data-theme="dark"] .play-section-label--light,
+:root[data-theme="dark"] .play-work__heading>p,
+:root[data-theme="dark"] .manifesto-foot p,
+:root[data-theme="dark"] .manifesto-aside__index,
+:root[data-theme="dark"] .play-about__copy>p:not(.play-kicker),
+:root[data-theme="dark"] .play-toolkit__heading>p,
+:root[data-theme="dark"] .toolkit-item small,
+:root[data-theme="dark"] .toolkit-tools span,
+:root[data-theme="dark"] .play-project__info p:not(.eyebrow),
+:root[data-theme="dark"] .play-project__descriptor{color:#e0dce8}
+:root[data-theme="dark"] .play-project__info h3,
+:root[data-theme="dark"] .toolkit-item strong,
+:root[data-theme="dark"] .play-about__copy h2,
+:root[data-theme="dark"] .manifesto-main h2{color:#f4f1f8}
+:root[data-theme="dark"] .play-project__info .eyebrow,
+:root[data-theme="dark"] .play-project__index{color:#e0dce8}
+:root[data-theme="dark"] .play-about__copy .play-kicker,
+:root[data-theme="dark"] .toolkit-item>span{color:#b5adff}
+:root[data-theme="dark"] .play-about__copy .play-about__lead{color:#f4f1f8}
+:root[data-theme="dark"] .play-toolkit{background:#211f28}
+:root[data-theme="dark"] .toolkit-item{border-color:#625d6b}
+:root[data-theme="dark"] .toolkit-grid{border-color:#625d6b}
+:root[data-theme="dark"] .toolkit-tools{border-color:#625d6b;color:#e0dce8}
+:root[data-theme="dark"] .play-work__note{border-color:#625d6b;color:#e0dce8}
+:root[data-theme="dark"] .manifesto-main h2 span{color:#b5adff}
+:root[data-theme="dark"] .manifesto-stamp{color:#b5adff;border-color:#b5adff}
+:root[data-theme="dark"] .play-cta{background:#493bd6}
+:root[data-theme="dark"] .play-cta__bottom p{color:#fff}
+:root[data-theme="dark"] .play-cta__kicker{color:#fff}
+
+/* Mobile: restore the same image-led card composition, then stack information. */
+@media(max-width:700px){
+ .play-project__visual,.play-project--standard .play-project__visual{min-height:310px}
+ .play-project--feature .play-project__visual{min-height:360px}
+ .play-project__image{inset:60px 5% -4% 5%}
+ .play-project__info{grid-template-columns:minmax(0,1fr) auto;gap:12px;padding-top:16px}
+ .play-project__info h3{font-size:31px}
+ .play-project__info p:not(.eyebrow){font-size:14px;line-height:1.65}
+ .play-project__descriptor{font-size:9px}
+ .play-project__meta{font-size:9px;top:16px;left:16px;right:16px}
+ .play-section-label{font-size:9px;letter-spacing:.07em;line-height:1.5}
+ .play-kicker,.play-hero__topline,.play-hero__bottom,.lab-playground__top,.lab-playground__bottom{font-size:9px;line-height:1.5}
+ .play-hero__intro,.play-lab__intro>p:last-child,.play-about__copy>p:not(.play-kicker),.play-toolkit__heading>p,.play-work__heading>p{font-size:14px;line-height:1.7}
+ .manifesto-foot p{font-size:14px;line-height:1.75}
+ .lab-canvas{touch-action:pan-y}
+ .lab-shape{touch-action:none;min-width:64px;min-height:64px}
+ body:has(.playground) .header-controls{position:relative;z-index:120;display:flex!important;align-items:center;gap:8px}
+ body:has(.playground) .menu-toggle,body:has(.playground) .theme-toggle{min-width:44px;min-height:44px;display:inline-flex!important;align-items:center;justify-content:center;position:relative;z-index:121;touch-action:manipulation}
+ body:has(.playground) .mobile-nav{z-index:110;pointer-events:auto;max-height:calc(100svh - 76px);overflow-y:auto;padding:16px 20px 22px;gap:0}
+ body:has(.playground) .mobile-nav a{min-height:48px;display:flex;align-items:center;font-size:14px;line-height:1.4}
+ .play-hero__actions a,.play-cta__bottom a,.play-button{min-height:48px;align-items:center}
+}
+@media(max-width:380px){
+ .play-hero__topline{font-size:8px}
+ .play-section-label{font-size:8px}
+ .play-project__visual,.play-project--standard .play-project__visual{min-height:280px}
+ .play-project--feature .play-project__visual{min-height:320px}
+ .play-project__info h3{font-size:28px}
+}
