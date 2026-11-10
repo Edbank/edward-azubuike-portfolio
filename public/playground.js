@@ -20,24 +20,48 @@ function remixLab(){
   labShape.animate([{transform:'scale(.7) rotate(-25deg)'},{transform:'scale(1.08) rotate(12deg)'},{transform:'scale(1) rotate(0deg)'}],{duration:420,easing:'cubic-bezier(.2,.8,.2,1)'});
 }
 remixButton?.addEventListener('click',remixLab);
-labShape?.addEventListener('click',remixLab);
-if(labCanvas&&labShape&&window.matchMedia('(pointer:fine)').matches){
- let dragging=false,startX=0,startY=0,baseX=0,baseY=0;
+
+if(labCanvas&&labShape){
+ let dragging=false,moved=false,startX=0,startY=0,baseX=0,baseY=0,pointerId=null;
+ const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
  labShape.addEventListener('pointerdown',event=>{
-   dragging=true;labShape.setPointerCapture(event.pointerId);
+   if(event.button!==undefined&&event.button!==0)return;
+   event.preventDefault();
+   dragging=true;moved=false;pointerId=event.pointerId;
    const shapeRect=labShape.getBoundingClientRect(),canvasRect=labCanvas.getBoundingClientRect();
    startX=event.clientX;startY=event.clientY;
    baseX=shapeRect.left-canvasRect.left;baseY=shapeRect.top-canvasRect.top;
    labShape.style.left=baseX+'px';labShape.style.top=baseY+'px';labShape.style.right='auto';
+   try{labShape.setPointerCapture(pointerId);}catch{}
  });
  labShape.addEventListener('pointermove',event=>{
-   if(!dragging)return;
+   if(!dragging||event.pointerId!==pointerId)return;
+   const dx=event.clientX-startX,dy=event.clientY-startY;
+   if(Math.abs(dx)+Math.abs(dy)>5)moved=true;
    const maxX=labCanvas.clientWidth-labShape.offsetWidth,maxY=labCanvas.clientHeight-labShape.offsetHeight;
-   labShape.style.left=Math.max(0,Math.min(maxX,baseX+event.clientX-startX))+'px';
-   labShape.style.top=Math.max(0,Math.min(maxY,baseY+event.clientY-startY))+'px';
+   labShape.style.left=clamp(baseX+dx,0,maxX)+'px';
+   labShape.style.top=clamp(baseY+dy,0,maxY)+'px';
  });
- const endDrag=()=>{dragging=false;};
- labShape.addEventListener('pointerup',endDrag);labShape.addEventListener('pointercancel',endDrag);
+ const finish=event=>{
+   if(!dragging||event.pointerId!==pointerId)return;
+   dragging=false;
+   if(!moved)remixLab();
+   pointerId=null;
+ };
+ labShape.addEventListener('pointerup',finish);
+ labShape.addEventListener('pointercancel',event=>{if(dragging&&event.pointerId===pointerId){dragging=false;pointerId=null;}});
+ labShape.addEventListener('lostpointercapture',()=>{dragging=false;pointerId=null;});
+ // Keyboard users can move the object without dragging.
+ labShape.addEventListener('keydown',event=>{
+   if(!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(event.key))return;
+   event.preventDefault();
+   const canvasRect=labCanvas.getBoundingClientRect(),shapeRect=labShape.getBoundingClientRect();
+   const step=event.shiftKey?24:8;
+   const x=shapeRect.left-canvasRect.left,y=shapeRect.top-canvasRect.top;
+   labShape.style.left=clamp(x+(event.key==='ArrowRight'?step:event.key==='ArrowLeft'?-step:0),0,labCanvas.clientWidth-labShape.offsetWidth)+'px';
+   labShape.style.top=clamp(y+(event.key==='ArrowDown'?step:event.key==='ArrowUp'?-step:0),0,labCanvas.clientHeight-labShape.offsetHeight)+'px';
+   labShape.style.right='auto';
+ });
 }
 if('IntersectionObserver'in window&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
  const revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
